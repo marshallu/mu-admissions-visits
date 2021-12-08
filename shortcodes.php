@@ -28,7 +28,7 @@ function mu_visits( $atts, $content = null ) {
 	});">';
 	$output .= '<div class="my-6 w-full">';
 	$output .= '<label for="highschool" class="font-semibold block mb-1">Find My High School</label>';
-	$output .= '<input class="w-full lg:w-1/2" x-ref="schoolSearchInput" x-model="schoolSearchTerm" type="text" class="text-input" placeholder="Enter your high school name" />';
+	$output .= '<input class="text-input w-full lg:w-1/2" x-ref="schoolSearchInput" x-model="schoolSearchTerm" type="text" placeholder="Enter your high school name" />';
 	$output .= '</div>';
 	$output .= '<div class="large-table">';
 	$output .= '<table class="table table-bordered table-striped w-full">';
@@ -82,7 +82,7 @@ function mu_visits_past( $atts, $content = null ) {
 	});">';
 	$output .= '<div class="my-6 w-full">';
 	$output .= '<label for="highschool" class="font-semibold block mb-1">Find My High School</label>';
-	$output .= '<input class="w-full lg:w-1/2" x-ref="schoolSearchInput" x-model="schoolSearchTerm" type="text" class="text-input" placeholder="Enter your high school name" />';
+	$output .= '<input class="text-input w-full lg:w-1/2" x-ref="schoolSearchInput" x-model="schoolSearchTerm" type="text" placeholder="Enter your high school name" />';
 	$output .= '</div>';
 	$output .= '<div class="large-table">';
 	$output .= '<table class="table table-bordered table-striped w-full">';
