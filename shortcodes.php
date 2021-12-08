@@ -59,8 +59,6 @@ function mu_visits( $atts, $content = null ) {
 }
 add_shortcode( 'mu_visits', 'mu_visits' );
 
-
-
 /**
  * Shortcode to list the Visits
  *

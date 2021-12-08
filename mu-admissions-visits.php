@@ -91,4 +91,12 @@ function mu_admissions_visits_deactivate() {
 }
 register_deactivation_hook( __FILE__, 'mu_profiles_deactivate' );
 
+/**
+ * Proper way to enqueue scripts and styles
+ */
+function mu_admissions_visits_scripts() {
+	wp_enqueue_style( 'momentjs', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js', '', true );
+}
+add_action( 'wp_enqueue_scripts', 'mu_admissions_visits_scripts' );
+
 add_action( 'init', 'mu_admissions_visits_post_type' );
