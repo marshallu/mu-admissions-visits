@@ -18,6 +18,9 @@ if ( ! class_exists( 'ACF' ) ) {
 	return new WP_Error( 'broke', __( 'Advanced Custom Fields is required for this plugin.', 'mu-admissions-visits' ) );
 }
 
+require WP_PLUGIN_DIR . '/mu-admissions-visits/vendor/autoload.php';
+use Carbon\Carbon;
+
 require plugin_dir_path( __FILE__ ) . '/editor.php';
 require plugin_dir_path( __FILE__ ) . '/endpoints.php';
 require plugin_dir_path( __FILE__ ) . '/shortcodes.php';

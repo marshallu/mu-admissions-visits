@@ -5,6 +5,10 @@
  * @package MU Admissions Visits
  */
 
+require WP_PLUGIN_DIR . '/mu-admissions-visits/vendor/autoload.php';
+use Carbon\Carbon;
+
+
 /**
  * Shortcode to list the Visits
  *
@@ -112,3 +116,47 @@ function mu_visits_past( $atts, $content = null ) {
 	return $output;
 }
 add_shortcode( 'mu_visits_past', 'mu_visits_past' );
+
+/**
+ * Shortcode to import visits
+ *
+ * @param object $atts The attribtes includes with the shortcode.
+ * @param string $content The HTML content.
+ * @return string
+ */
+function mu_visits_import( $atts, $content = null ) {
+	$data = shortcode_atts(
+		array(
+			'filename' => null,
+		),
+		$atts
+	);
+
+	$file_path = plugin_dir_path( __FILE__ ) . 'csv/' . $data['filename'];
+	if ( ! file_exists( $file_path ) ) {
+		return 'No such file at ' . $file_path;
+	}
+
+	$file = fopen( $file_path, 'r' );
+
+	while ( ( $line = fgetcsv( $file ) ) !== false ) {
+		$school_name = trim( $line[0] );
+		$visit_date  = $line[1];
+		$visit_type  = $line[2];
+
+		wp_insert_post(
+			array(
+				'post_type'   => 'visit',
+				'post_status' => 'publish',
+				'post_title'  => $school_name,
+				'meta_input'  => array(
+					'mu_visits_type' => trim( $visit_type ),
+					'mu_visits_date' => Carbon::parse( trim( $visit_date ) )->format( 'Ymd' ),
+				),
+			),
+		);
+	}
+
+	fclose( $file );
+}
+add_shortcode( 'mu_visits_import', 'mu_visits_import' );
