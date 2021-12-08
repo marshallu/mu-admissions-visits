@@ -141,20 +141,35 @@ function mu_visits_import( $atts, $content = null ) {
 
 	while ( ( $line = fgetcsv( $file ) ) !== false ) {
 		$school_name = trim( $line[0] );
-		$visit_date  = $line[1];
-		$visit_type  = $line[2];
+		$visit_date  = trim( $line[1] );
+		$visit_type  = trim( $line[2] );
 
-		wp_insert_post(
+		$posts_with_meta = get_posts(
 			array(
-				'post_type'   => 'visit',
-				'post_status' => 'publish',
-				'post_title'  => $school_name,
-				'meta_input'  => array(
-					'mu_visits_type' => trim( $visit_type ),
-					'mu_visits_date' => Carbon::parse( trim( $visit_date ) )->format( 'Ymd' ),
-				),
-			),
+				'post_type'      => 'visit',
+				'posts_per_page' => 1,
+				'meta_key'       => 'mu_visits_date',
+				'meta_value'     => Carbon::parse( $visit_date )->format( 'Ymd' ),
+				'title'          => $school_name,
+				'fields'         => 'ids',
+			)
 		);
+
+		if ( ! $posts_with_meta ) {
+			wp_insert_post(
+				array(
+					'post_type'   => 'visit',
+					'post_status' => 'publish',
+					'post_title'  => $school_name,
+					'meta_input'  => array(
+						'mu_visits_date' => $visit_type,
+						'mu_visits_date' => Carbon::parse( $visit_date )->format( 'Ymd' ),
+					),
+				),
+			);
+		} else {
+			echo 'Visit for ' . esc_attr( $school_name ) . ' already created.<br><br>';
+		}
 	}
 
 	fclose( $file );
