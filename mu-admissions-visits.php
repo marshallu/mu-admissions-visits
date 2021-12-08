@@ -95,7 +95,7 @@ register_deactivation_hook( __FILE__, 'mu_profiles_deactivate' );
  * Proper way to enqueue scripts and styles
  */
 function mu_admissions_visits_scripts() {
-	wp_enqueue_style( 'momentjs', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js', '', true );
+	wp_enqueue_script( 'momentjs', 'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js', '', true, true );
 }
 add_action( 'wp_enqueue_scripts', 'mu_admissions_visits_scripts' );
 
