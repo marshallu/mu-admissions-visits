@@ -98,9 +98,9 @@ function mu_visits_past( $atts, $content = null ) {
 	$output .= '<tbody>';
 	$output .= '<template x-for="(visit, index) in visits" :key="index">';
 	$output .= '<tr :class="{ \'hidden\' : !visit.title.toLowerCase().includes(schoolSearchTerm.toLowerCase() ) }">';
-	$output .= '<td class="text-center" x-text="`${moment(visit._past_date).format(\'MMMM Do YYYY\')}`"></td>';
+	$output .= '<td class="text-center" x-text="`${moment(visit.mu_visits_date).format(\'MMMM Do YYYY\')}`"></td>';
 	$output .= '<td x-text="visit.title"></td>';
-	$output .= '<td class="text-center" x-text="visit._past_start_time"></td>';
+	$output .= '<td class="text-center" x-text="visit.mu_past_start_time"></td>';
 	$output .= '<td class="text-center" x-text="visit.mu_visits_end_time"></td>';
 	$output .= '<td x-text="visit.mu_visits_type"></td>';
 	$output .= '</tr>';
