@@ -78,7 +78,7 @@ function mu_admissions_visits_post_type() {
  * Flush rewrites whenever the plugin is activated.
  */
 function mu_admissions_visits_activate() {
-	flush_rewrite_rules();
+	flush_rewrite_rules( false );
 }
 register_activation_hook( __FILE__, 'mu_admissions_visits_activate' );
 
@@ -87,9 +87,8 @@ register_activation_hook( __FILE__, 'mu_admissions_visits_activate' );
  */
 function mu_admissions_visits_deactivate() {
 	unregister_post_type( 'visit' );
-	flush_rewrite_rules();
+	flush_rewrite_rules( false );
 }
-register_activation_hook( __FILE__, 'mu_profiles_deactivate' );
-
+register_deactivation_hook( __FILE__, 'mu_profiles_deactivate' );
 
 add_action( 'init', 'mu_admissions_visits_post_type' );
