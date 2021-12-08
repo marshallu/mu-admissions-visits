@@ -53,7 +53,7 @@ if( function_exists('acf_add_local_field_group') ):
 					'id' => '',
 				),
 				'display_format' => 'g:i a',
-				'return_format' => 'H:i:s',
+				'return_format' => 'g:i a',
 			),
 			array(
 				'key' => 'field_61b10746883df',
