@@ -15,12 +15,13 @@
  */
 
 if ( ! class_exists( 'ACF' ) ) {
-	return new WP_Error( 'broke', __( 'Advanced Custom Fields is required for this plugin.', 'my_textdomain' ) );
+	return new WP_Error( 'broke', __( 'Advanced Custom Fields is required for this plugin.', 'mu-admissions-visits' ) );
 }
 
 require plugin_dir_path( __FILE__ ) . '/editor.php';
 require plugin_dir_path( __FILE__ ) . '/endpoints.php';
 require plugin_dir_path( __FILE__ ) . '/shortcodes.php';
+require plugin_dir_path( __FILE__ ) . '/acf-fields.php';
 
 /**
  * Register a custom post type called "Visit".
