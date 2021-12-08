@@ -88,7 +88,7 @@ function mu_get_past_visits() {
 		'numberposts' => 150,
 		'meta_key'    => 'mu_visits_date',
 		'orderby'     => 'meta_value_num',
-		'order'       => 'asc',
+		'order'       => 'desc',
 		'meta_query'  => array(
 			array(
 				'key'     => 'mu_visits_date',
