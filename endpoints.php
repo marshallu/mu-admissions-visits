@@ -68,7 +68,8 @@ function mu_get_latest_visits() {
 				array(
 					'title'                => $post->post_title,
 					'mu_visits_date'       => get_post_meta( $post->ID, 'mu_visits_date', 1 ),
-					'mu_visits_start_time' => Carbon::parse( get_field( 'mu_visits_start_time', $post->ID ) )->format( 'g:i a' ),
+					// 'mu_visits_start_time' => Carbon::parse( get_field( 'mu_visits_start_time', $post->ID ) )->format( 'g:i a' ),
+					'mu_visits_start_time' => get_field( 'mu_visits_start_time', $post->ID ),
 					'mu_visits_end_time'   => get_field( 'mu_visits_end_time', $post->ID ),
 					'mu_visits_type'       => get_post_meta( $post->ID, 'mu_visits_type', 1 ),
 				)
