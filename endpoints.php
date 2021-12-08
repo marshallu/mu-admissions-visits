@@ -108,13 +108,24 @@ function mu_get_past_visits() {
 
 	if ( $posts ) {
 		foreach ( $posts as $post ) {
+			$start_time = '';
+			$end_time   = '';
+
+			if ( get_field( 'mu_visits_start_time', $post->ID ) ) {
+				$start_time = Carbon::parse( get_field( 'mu_visits_start_time', $post->ID ) )->format( 'g:i a' );
+			}
+
+			if ( get_field( 'mu_visits_end_time', $post->ID ) ) {
+				$end_time = Carbon::parse( get_field( 'mu_visits_end_time', $post->ID ) )->format( 'g:i a' );
+			}
+
 			array_push(
 				$visits,
 				array(
 					'title'                => $post->post_title,
 					'mu_visits_date'       => get_post_meta( $post->ID, 'mu_visits_date', 1 ),
-					'mu_visits_start_time' => Carbon::parse( get_field( 'mu_visits_start_time', $post->ID ) )->format( 'g:i a' ),
-					'mu_visits_end_time' => Carbon::parse( get_field( 'mu_visits_end_time', $post->ID ) )->format( 'g:i a' ),
+					'mu_visits_start_time' => $start_time,
+					'mu_visits_end_time'   =>  $end_time,
 					'mu_visits_type'       => get_post_meta( $post->ID, 'mu_visits_type', 1 ),
 				)
 			);
