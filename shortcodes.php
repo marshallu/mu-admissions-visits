@@ -80,12 +80,12 @@ function mu_visits_past( $atts, $content = null ) {
 	);
 
 	$args = array(
-		'post_type'   => 'visit',
-		'numberposts' => -1,
-		'meta_key'    => 'mu_visits_date',
-		'orderby'     => 'meta_value_num',
-		'order'       => 'desc',
-		'meta_query'  => array(
+		'post_type'      => 'visit',
+		'posts_per_page' => -1,
+		'meta_key'       => 'mu_visits_date',
+		'orderby'        => 'meta_value_num',
+		'order'          => 'desc',
+		'meta_query'     => array(
 			array(
 				'key'     => 'mu_visits_date',
 				'value'   => date( 'Y-m-d' ),
