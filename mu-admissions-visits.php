@@ -103,4 +103,16 @@ function mu_admissions_visits_scripts() {
 }
 add_action( 'wp_enqueue_scripts', 'mu_admissions_visits_scripts' );
 
+/**
+ * Add 'school' to the acceptable URL parameters
+ *
+ * @param array $vars The array of acceptable URL parameters.
+ * @return array
+ */
+function mu_admissions_visits_query_parameters( $vars ) {
+	$vars[] = 'school';
+	return $vars;
+}
+add_filter( 'query_vars', 'mu_admissions_visits_query_parameters' );
+
 add_action( 'init', 'mu_admissions_visits_post_type' );
