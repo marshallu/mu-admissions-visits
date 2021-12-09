@@ -101,8 +101,10 @@ function mu_visits_past( $atts, $content = null ) {
 	$output .= '<div class="my-6 w-full">';
 	$output .= '<form action="' . esc_url( home_url() ) . '/search-visits" method="GET">';
 	$output .= '<label for="highschool" class="font-semibold block mb-1">Find My High School</label>';
+	$output .= '<div class="flex flex-col lg:flex-row">';
 	$output .= '<input class="text-input w-full lg:w-1/2" name="school" id="school" type="text" placeholder="Enter your high school name" />';
-	$output .= '<button type="submit" class="hidden">Search</button>';
+	$output .= '<button type="submit" class="mt-4 lg:mt-0 lg:ml-4 btn btn-tight btn-green">Search</button>';
+	$output .= '</div>';
 	$output .= '</form>';
 	$output .= '</div>';
 	$output .= '<div class="large-table">';
