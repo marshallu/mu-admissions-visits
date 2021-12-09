@@ -122,7 +122,7 @@ function mu_visits_past( $atts, $content = null ) {
 		while ( $the_query->have_posts() ) {
 			$the_query->the_post();
 			$output .= '<tr>';
-			$output .= '<td class="text-left">' . esc_attr( Carbon::parse( get_field( 'mu_visits_start_time', get_the_ID() ) )->format( 'F j, Y' ) ) . '</td>';
+			$output .= '<td class="text-left">' . esc_attr( Carbon::parse( get_field( 'mu_visits_date', get_the_ID() ) )->format( 'F j, Y' ) ) . '</td>';
 			$output .= '<td>' . esc_attr( get_the_title() ) . '</td>';
 			if ( get_field( get_field( 'mu_visits_start_time', get_the_ID() ) ) ) {
 				$output .= '<td class="text-center">' . esc_attr( Carbon::parse( get_field( 'mu_visits_start_time', get_the_ID() ) )->format( 'g:i a' ) ) . '</td>';
