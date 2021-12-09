@@ -81,7 +81,7 @@ function mu_visits_past( $atts, $content = null ) {
 
 	$args = array(
 		'post_type'   => 'visit',
-		'numberposts' => 150,
+		'numberposts' => -1,
 		'meta_key'    => 'mu_visits_date',
 		'orderby'     => 'meta_value_num',
 		'order'       => 'desc',
