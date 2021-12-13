@@ -71,7 +71,8 @@ if( function_exists('acf_add_local_field_group') ):
 				'choices' => array(
 					'Virtual' => 'Virtual',
 					'In-Person' => 'In-Person',
-					'Fair' => 'Fair',
+					'In-Person Fair' => 'In-Person Fair',
+					'Virtual Fair' => 'Virtual Fair',
 				),
 				'default_value' => false,
 				'allow_null' => 1,

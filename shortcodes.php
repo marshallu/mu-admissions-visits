@@ -79,12 +79,17 @@ function mu_visits_past( $atts, $content = null ) {
 		$atts
 	);
 
+	global $paged;
+
+	$posts_per_page = 100;
+
 	$args = array(
 		'post_type'      => 'visit',
-		'posts_per_page' => -1,
+		'posts_per_page' => $posts_per_page,
 		'meta_key'       => 'mu_visits_date',
 		'orderby'        => 'meta_value_num',
 		'order'          => 'desc',
+		'paged'          => $paged,
 		'meta_query'     => array(
 			array(
 				'key'     => 'mu_visits_date',
@@ -96,6 +101,9 @@ function mu_visits_past( $atts, $content = null ) {
 	);
 
 	$the_query = new WP_Query( $args );
+
+	$total_found_posts = $the_query->found_posts;
+	$total_page        = ceil( $total_found_posts / $posts_per_page );
 
 	$output  = '<div class="">';
 	$output .= '<div class="my-6 w-full">';
@@ -113,8 +121,6 @@ function mu_visits_past( $atts, $content = null ) {
 	$output .= '<tr>';
 	$output .= '<th>Date</th>';
 	$output .= '<th>High School</th>';
-	$output .= '<th>Start Time</th>';
-	$output .= '<th>End Time</th>';
 	$output .= '<th>Visit Type</th>';
 	$output .= '</tr>';
 	$output .= '</thead>';
@@ -126,25 +132,22 @@ function mu_visits_past( $atts, $content = null ) {
 			$output .= '<tr>';
 			$output .= '<td class="text-left">' . esc_attr( Carbon::parse( get_field( 'mu_visits_date', get_the_ID() ) )->format( 'F j, Y' ) ) . '</td>';
 			$output .= '<td>' . esc_attr( get_the_title() ) . '</td>';
-			if ( get_field( get_field( 'mu_visits_start_time', get_the_ID() ) ) ) {
-				$output .= '<td class="text-center">' . esc_attr( Carbon::parse( get_field( 'mu_visits_start_time', get_the_ID() ) )->format( 'g:i a' ) ) . '</td>';
-			} else {
-				$output .= '<td class="text-center"></td>';
-			}
-			if ( get_field( get_field( 'mu_visits_end_time', get_the_ID() ) ) ) {
-				$output .= '<td class="text-center">' . esc_attr( Carbon::parse( get_field( 'mu_visits_end_time', get_the_ID() ) )->format( 'g:i a' ) ) . '</td>';
-			} else {
-				$output .= '<td class="text-center"></td>';
-			}
 			$output .= '<td>' . esc_attr( get_field( 'mu_visits_type', get_the_ID() ) ) . '</td>';
 			$output .= '</tr>';
 		}
 	}
 
 	wp_reset_postdata();
+
 	$output .= '</tbody>';
 	$output .= '</table>';
 	$output .= '</div>';
+
+	$output .= '<div class="flex justify-between">';
+	$output .= '<span class="next-posts-links">' . get_next_posts_link( 'Next page', $total_page ) . '</span>';
+	$output .= '<span class="prev-posts-links">' . get_previous_posts_link( 'Previous page' ) . '</span>';
+	$output .= '</div>';
+
 	$output .= '</div>';
 	return $output;
 }
@@ -161,47 +164,53 @@ function mu_visits_import( $atts, $content = null ) {
 	$data = shortcode_atts(
 		array(
 			'filename' => null,
+			'fair'     => false,
 		),
 		$atts
 	);
 
+	if ( ! is_admin() ) {
+		require_once ABSPATH . 'wp-admin/includes/post.php';
+	}
+
 	$file_path = plugin_dir_path( __FILE__ ) . 'csv/' . $data['filename'];
+
 	if ( ! file_exists( $file_path ) ) {
 		return 'No such file at ' . $file_path;
 	}
 
 	$file = fopen( $file_path, 'r' );
 
+	$count = 0;
 	while ( ( $line = fgetcsv( $file ) ) !== false ) {
+		$count++;
+
 		$school_name = trim( $line[0] );
 		$visit_date  = trim( $line[1] );
 		$visit_type  = trim( $line[2] );
 
-		$posts_with_meta = get_posts(
-			array(
-				'post_type'      => 'visit',
-				'posts_per_page' => 1,
-				'meta_key'       => 'mu_visits_date',
-				'meta_value'     => Carbon::parse( $visit_date )->format( 'Ymd' ),
-				'title'          => $school_name,
-				'fields'         => 'ids',
-			)
-		);
+		if ( $data['fair'] ) {
+			if ( 'virtual' === strtolower( $visit_type ) ) {
+				$visit_type = 'Virtual Fair';
+			}
+			$visit_type = 'In-Person Fair';
+		}
 
-		if ( ! $posts_with_meta ) {
+		$check_title = $count . ' --- ' . $school_name;
+
+		if ( ! post_exists( $school_name, $check_title, '', 'visit' ) ) {
 			wp_insert_post(
 				array(
-					'post_type'   => 'visit',
-					'post_status' => 'publish',
-					'post_title'  => $school_name,
-					'meta_input'  => array(
+					'post_type'    => 'visit',
+					'post_status'  => 'publish',
+					'post_title'   => $school_name,
+					'post_content' => $check_title,
+					'meta_input'   => array(
 						'mu_visits_date' => $visit_type,
 						'mu_visits_date' => Carbon::parse( $visit_date )->format( 'Ymd' ),
 					),
 				),
 			);
-		} else {
-			echo 'Visit for ' . esc_attr( $school_name ) . ' already created.<br><br>';
 		}
 	}
 
